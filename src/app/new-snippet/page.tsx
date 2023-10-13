@@ -1,8 +1,5 @@
 "use client";
 import React, { use, useEffect } from "react";
-import ReactCodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
-import { python } from "@codemirror/lang-python";
 import {
   Box,
   Button,
@@ -13,22 +10,9 @@ import {
   TextField
 } from "@radix-ui/themes";
 import { Controller, useForm } from "react-hook-form";
-import { red } from "@radix-ui/colors";
 import useNewSnippetMutation from "@/queryHooks/useNewSnippetMutation";
 import { useUserQuery } from "@/queryHooks/useUserQuery";
-
-type Lang = "javascript" | "python" | "text";
-
-const getExtension = (lang: Lang) => {
-  switch (lang) {
-    case "javascript":
-      return javascript({ jsx: true, typescript: true });
-    case "python":
-      return python();
-    default:
-      return;
-  }
-};
+import CodeEditor, { Lang } from "@/components/CodeEditor";
 
 type SnippetFormData = {
   name: string;
@@ -44,19 +28,21 @@ function NewSnippetPage() {
     reset,
     setError,
     watch,
+    getValues,
     formState: { errors, isValid }
   } = useForm<SnippetFormData>({
     defaultValues: { lang: "text" },
     mode: "all",
     reValidateMode: "onChange"
   });
-  const extension = getExtension(watch("lang"));
   const { data: user } = useUserQuery();
   const {
     mutate: createSnippet,
     isSuccess,
     error: createSnippetError
   } = useNewSnippetMutation();
+
+  const lang = watch("lang");
 
   useEffect(() => {
     if (isSuccess) {
@@ -128,19 +114,7 @@ function NewSnippetPage() {
           name="snippet"
           rules={{ required: true }}
           render={({ field: { value, onChange } }) => {
-            return (
-              <ReactCodeMirror
-                style={{
-                  border: errors.snippet ? `2px solid ${red.red8}` : undefined,
-                  borderRadius: "12px",
-                  padding: "3px"
-                }}
-                value={value}
-                extensions={extension ? [extension] : []}
-                height="500px"
-                onChange={onChange}
-              ></ReactCodeMirror>
-            );
+            return <CodeEditor lang={lang} value={value} onChange={onChange} />;
           }}
         />
         <Button mt="4" type="submit" disabled={!isValid}>
