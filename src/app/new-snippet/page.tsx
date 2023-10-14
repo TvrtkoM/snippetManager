@@ -128,7 +128,7 @@ function NewSnippetPage() {
             return <CodeEditor lang={lang} value={value} onChange={onChange} />;
           }}
         />
-        <Button mt="4" type="submit" disabled={!isValid}>
+        <Button mt="4" disabled={!isValid}>
           Submit
         </Button>
       </Box>
