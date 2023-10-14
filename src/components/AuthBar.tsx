@@ -33,10 +33,17 @@ function AuthBar() {
           <Box>
             <Text size="3">Hi, {user?.email}</Text>
           </Box>
-          <Box>
+          <Box ml="auto">
             <Text size="3" className="cursor-pointer" onClick={() => logout()}>
               Log out
             </Text>
+          </Box>
+          <Box>
+            <Link href="/">
+              <Text size="3" className="cursor-pointer">
+                Home
+              </Text>
+            </Link>
           </Box>
         </>
       ) : isLoading ? (
