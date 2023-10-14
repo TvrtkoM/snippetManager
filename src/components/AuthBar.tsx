@@ -39,8 +39,8 @@ function AuthBar() {
               size="3"
               className="cursor-pointer"
               onClick={() => {
-                router.push("/login");
                 logout();
+                router.push("/login");
               }}
             >
               Log out
