@@ -31,7 +31,6 @@ function NewSnippetPage() {
     reset,
     setError,
     watch,
-    getValues,
     formState: { errors, isValid }
   } = useForm<SnippetFormData>({
     defaultValues: { lang: "text" },

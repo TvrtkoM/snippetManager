@@ -3,7 +3,7 @@ import useLogoutMutation from "@/queryHooks/useLogoutMutation";
 import { useUserQuery } from "@/queryHooks/useUserQuery";
 import { Box, Flex, Text } from "@radix-ui/themes";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { blueDark, grayP3 } from "@radix-ui/colors";
 
@@ -11,6 +11,7 @@ function AuthBar() {
   const { data: user, isLoading } = useUserQuery();
   const loggedIn = Boolean(user);
   const path = usePathname();
+  const router = useRouter();
 
   const { mutate: logout } = useLogoutMutation();
 
@@ -34,7 +35,14 @@ function AuthBar() {
             <Text size="3">Hi, {user?.email}</Text>
           </Box>
           <Box ml="auto">
-            <Text size="3" className="cursor-pointer" onClick={() => logout()}>
+            <Text
+              size="3"
+              className="cursor-pointer"
+              onClick={() => {
+                router.push("/login");
+                logout();
+              }}
+            >
               Log out
             </Text>
           </Box>
