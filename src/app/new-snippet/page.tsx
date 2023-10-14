@@ -13,6 +13,7 @@ import { Controller, useForm } from "react-hook-form";
 import useNewSnippetMutation from "@/queryHooks/useNewSnippetMutation";
 import { useUserQuery } from "@/queryHooks/useUserQuery";
 import CodeEditor, { Lang } from "@/components/CodeEditor";
+import Link from "next/link";
 
 type SnippetFormData = {
   name: string;
@@ -70,6 +71,16 @@ function NewSnippetPage() {
         {errors.root && (
           <Callout.Root className="mb-4" variant="soft" color="red">
             <Callout.Text>{errors.root.message}</Callout.Text>
+          </Callout.Root>
+        )}
+        {isSuccess && (
+          <Callout.Root className="mb-4" variant="soft" color="green">
+            <Callout.Text>
+              Snippet created successfully. Create a new one? Or go back{" "}
+              <Link href="/" className="underline">
+                home
+              </Link>
+            </Callout.Text>
           </Callout.Root>
         )}
         <Flex align="center" gap="3" mb="2">

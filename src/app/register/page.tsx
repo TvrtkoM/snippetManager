@@ -1,6 +1,7 @@
 "use client";
 import useRegisterMutation from "@/queryHooks/useRegisterMutation";
 import { Button, Callout, TextField } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { isPresent } from "ts-is-present";
@@ -16,11 +17,16 @@ function RegisterPage({}) {
     reValidateMode: "onChange",
     mode: "all"
   });
+  const router = useRouter();
 
-  const { data, mutate, isError, error } = useRegisterMutation();
+  const { mutate, error, isSuccess } = useRegisterMutation();
   const onSubmit = (data: { email: string; password: string }) => {
     mutate(data);
   };
+
+  useEffect(() => {
+    isSuccess && router.push("/new-snippet");
+  }, [isSuccess]);
 
   useEffect(() => {
     if (!isPresent(error)) {
@@ -31,6 +37,7 @@ function RegisterPage({}) {
 
   return (
     <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="text-lg font-medium my-4">Register</h1>
       {errors.root && (
         <Callout.Root className="mb-4" variant="soft" color="red">
           <Callout.Text>{errors.root.message}</Callout.Text>

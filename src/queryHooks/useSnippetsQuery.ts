@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Database } from "@/dbtypes";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { isPresent } from "ts-is-present";
 
 export default function useSnippetsQuery() {
   const dbClient = createClientComponentClient<Database>();
@@ -13,11 +14,12 @@ export default function useSnippetsQuery() {
       }
       return res.data;
     },
-    {}
+    { refetchOnWindowFocus: false }
   );
 }
 
-export function useSnippetsForUserQuery(userId: string) {
+export function useSnippetsForUserQuery(userId?: string) {
+  if (!isPresent(userId)) return useSnippetsQuery();
   return useQuery<Database["public"]["Tables"]["snippets"]["Row"][]>(
     ["snippets", userId],
     async () => {
@@ -31,6 +33,6 @@ export function useSnippetsForUserQuery(userId: string) {
       }
       return res.data;
     },
-    { enabled: !!userId }
+    { enabled: !!userId, refetchOnWindowFocus: false }
   );
 }

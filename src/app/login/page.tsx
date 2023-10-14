@@ -32,6 +32,7 @@ function LoginPage({}) {
 
   return (
     <form className="h-full" onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="text-lg font-medium my-4">Login</h1>
       {errors.root && (
         <Callout.Root className="mb-4" variant="soft" color="red">
           <Callout.Text>{errors.root.message}</Callout.Text>

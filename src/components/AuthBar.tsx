@@ -8,7 +8,7 @@ import React from "react";
 import { blueDark, grayP3 } from "@radix-ui/colors";
 
 function AuthBar() {
-  const { data: user } = useUserQuery();
+  const { data: user, isLoading } = useUserQuery();
   const loggedIn = Boolean(user);
   const path = usePathname();
 
@@ -39,10 +39,17 @@ function AuthBar() {
             </Text>
           </Box>
         </>
+      ) : isLoading ? (
+        <>Loading...</>
       ) : (
-        <Link href={"/login"}>
-          <Text>Log in</Text>
-        </Link>
+        <>
+          <Link href={"/login"}>
+            <Text>Log in</Text>
+          </Link>
+          <Link href={"/register"}>
+            <Text>Register</Text>
+          </Link>
+        </>
       )}
     </Flex>
   );
