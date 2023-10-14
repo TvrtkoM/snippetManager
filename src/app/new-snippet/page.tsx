@@ -14,6 +14,8 @@ import useNewSnippetMutation from "@/queryHooks/useNewSnippetMutation";
 import { useUserQuery } from "@/queryHooks/useUserQuery";
 import CodeEditor, { Lang } from "@/components/CodeEditor";
 import Link from "next/link";
+import { isPresent } from "ts-is-present";
+import Error from "next/error";
 
 type SnippetFormData = {
   name: string;
@@ -36,7 +38,7 @@ function NewSnippetPage() {
     mode: "all",
     reValidateMode: "onChange"
   });
-  const { data: user } = useUserQuery();
+  const { data: user, isLoading } = useUserQuery();
   const {
     mutate: createSnippet,
     isSuccess,
@@ -57,6 +59,11 @@ function NewSnippetPage() {
     }
     setError("root", { message: createSnippetError });
   }, [createSnippetError]);
+
+  if (!isLoading && !isPresent(user)) {
+    return <Error statusCode={404} />;
+  }
+
   return (
     <form
       onSubmit={handleSubmit((data) => {
